@@ -13,7 +13,6 @@ $conn = new PDO($dsn, $user, $pass);
 //Sprawdzamy, czy połączenie się udało
 if ($conn->errorCode() != null) {
     // die - exit z komunikatem
-    die("Polaczenie nieudane. Blad: " .
+    die("Something goes wrong :(. ERROR: " .
             $conn->errorInfo()[2]);
 }
-echo("Polaczenie udane.<br><br>");
