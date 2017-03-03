@@ -5,14 +5,14 @@ class User
 
     const NON_EXISTING_ID = -1;
 
-    private $id = self::NON_EXISTING_ID;
+    private $id;
     private $username;
     private $email;
     private $hashPass;
 
     public function __construct()
     {
-        
+        $this->id = self::NON_EXISTING_ID;
     }
 
     ////////////////////////////////
@@ -138,6 +138,8 @@ class User
                 $loadedUser->username = $row['username'];
                 $loadedUser->hashPass = $row['hash_pass'];
                 $loadedUser->email = $row['email'];
+                
+                $ret[] = $loadedUser;
             }
         }
 
