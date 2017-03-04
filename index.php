@@ -64,28 +64,39 @@ $tweets = Tweet::loadAllTweets($conn);
         <div class="jumbotron text-center">
             <h1>Welcome, dear Guest <span class="glyphicon glyphicon-sunglasses"></span></h1>
             <p>This page is a simple clone of twitter.
-                Feel free and tweet something :)</p>
+                Feel free and tweet something&nbsp;:)</p>
         </div>
         <div class="container">
             <div class="row tweet-send">
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <div class="form-group">
-                        <form action="" method="post" role="form">
-                            <p><textarea name="text"></textarea></p>
-                            <p><button>Send</button></p>
-                        </form>
+                <h3>Add Tweet</h3>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 tweet-send">
+                    <form action="" method="post" role="form">
+                        <div class="form-group">
+                            <p><textarea name="text" rows="4" class="form-control"></textarea></p>
+                        </div>
+                        <button type="submit" class="btn btn-default btn-tweet">Add</button>
+                    </form>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                    <div class="tweet-instruction">
+                        Myśmy więc on jest ta: każda realność, która swoją kulturę, wyjść z części. Ale czyżby w rzeczy szczęśliwości doprowadzić. My możemy się niezgadza z niej płynącej szczęśliwości tej dostąpić miało; gdyby więc też to tedy?
                     </div>
                 </div>
             </div>
             <div class="row">
-                <?php
-                foreach ($tweets as $tweet) {
-                    echo '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 tweet">';
-                    echo '<p>' . $tweet->getText() . '</p>';
-                    echo '<span class="tweet-date">' . $tweet->getCreationDate() . '</span>';
-                    echo '</div>';
-                }
-                ?>
+                <h3>All Tweets</h3>
+                <div class="tweets">
+                    <?php
+                    foreach ($tweets as $tweet) {
+                        echo '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">';
+                        echo '<div class="tweet">';
+                        echo '<p>' . $tweet->getText() . '</p>';
+                        echo '<span class="tweet-date">' . $tweet->getCreationDate() . '</span>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                    ?>
+                </div>
             </div>
         </div>
     </body>
