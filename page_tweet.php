@@ -10,12 +10,27 @@ if (!isset($_SESSION['user_id'])) {
 require_once 'connection.php';
 require 'src/User.php';
 require 'src/Tweet.php';
+require 'src/Comment.php';
 
 // z geta mamy ID
 $tweetID = $_GET['id'];
 // walidacja
 
-$tweet = Tweet::loadTweetById($conn, $tweetID)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    /** @ToDo: walidacja  */
+    $comment = new Comment();
+
+    $comment->setUserId($userID);
+    $comment->setTweetId($tweetID);
+    $comment->setText($_POST['text']);
+    $comment->setCreationDate(date('Y-m-d H:i:s'));
+
+    $comment->saveToDB($conn);
+}
+
+$tweet = Tweet::loadTweetById($conn, $tweetID);
+$comments = Comment::loadAllCommentsByTweetId($conn, $tweetID);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,6 +60,36 @@ $tweet = Tweet::loadTweetById($conn, $tweetID)
                     echo '<p>' . $tweet->getText() . '</p>';
                     echo '<span class="tweet-date">' . $tweet->getCreationDate() . '</span>';
                     echo '</div>';
+                    ?>
+                </div>
+            </div>
+            <!--formularz tworzenia nowego komentarza-->
+            <div class="row comment-send">
+                <h3>Add Comment</h3>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 comment-send">
+                    <form action="" method="post" role="form">
+                        <div class="form-group">
+                            <p><textarea name="text" rows="4" class="form-control"<?php echo ($userID !== null) ? '' : 'disabled'; ?>></textarea></p>
+                        </div>
+                        <button type="submit" class="btn btn-default btn-comment" <?php echo ($userID !== null) ? '' : 'disabled'; ?>>Add</button>
+                    </form>
+                </div>
+            </div>
+            <!--wyświetl wszystkie komentarze-->
+            <div class="row">
+                <h3>Comments</h3>
+                <div class="comments">
+                    <?php
+                    foreach ($comments as $comment) {
+                        echo '<div class="row">';
+                        echo '<div class="comment col-xs-12 col-sm-8 col-md-8 col-lg-6">';
+                        echo '<p>' . $comment->getText() . '</p>';
+                        echo '<span class="tweet-date">' . $comment->getCreationDate() . '</span>';
+                        echo '<span class="tweet-username">' . '<a href="page_user?id=' . $comment->getUserId() . '">' 
+                                . User::getUsernameById($conn, $comment->getUserId()) . '</a></span>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
                     ?>
                 </div>
             </div>

@@ -232,7 +232,7 @@ class Tweet
                 echo ':(';
             }
         } else {
-            //Updating user in DB
+            //Updating tweet in DB
             $stmt = $conn->prepare(
                     'UPDATE Tweets SET user_id=:userId, tweet_text=:text, creation_date=:creationDate WHERE id=:id'
             );
