@@ -1,18 +1,36 @@
 <?php
+session_start();
+if (isset($_SESSION['user_id'])) {
+    // redirect
+    header('Location: index.php');
+}
+
 require_once 'connection.php';
 require 'src/User.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // @ToDo - validacja
+    /** @ToDo: walidacja */
+    if (User::loadUserByEmail($conn, $_POST['email']) === null) {
 
-    $user = new User();
+        $user = new User();
 
-    $user->setUsername($_POST['username']); //
-    $user->setEmail($_POST['email']);
-    $user->setPass($_POST['password']);
+        $user->setUsername($_POST['username']); //
+        $user->setEmail($_POST['email']);
+        $user->setPass($_POST['password']);
 
-    $user->saveToDB($conn);
+        $user->saveToDB($conn);
+
+        // ustaw dane użytkownika w sesji
+        $_SESSION['user_id'] = $user->getId();
+        $_SESSION['username'] = $user->getUsername();
+        $_SESSION['user_email'] = $user->getEmail();
+
+        // redirect
+        header('Location: index.php');
+    } else {
+        $message = 'User with this email address already exist!';
+    }
 }
 ?>
 <!doctype html>
@@ -30,7 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <div class="row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-
+                    <?php
+                    if (isset($message)) {
+                        echo $message;
+                    }
+                    ?>
                 </div>
             </div>
             <div class="row">
@@ -49,8 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <button>Register</button>
                         </form>
                     </div>
+                    <p>Already registered? <a href="page_login.php">Log in here</a></p>
                 </div>
-            </div>    
+            </div>
+        </div>
     </body>
 </html>
 

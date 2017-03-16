@@ -1,12 +1,29 @@
 <?php
+session_start();
+if (
+           isset($_SESSION['user_id']) 
+        && isset($_SESSION['username']) 
+        && isset($_SESSION['user_email'])
+) {
+    $userID = $_SESSION['user_id'];
+    $username = $_SESSION['username'];
+    $userEmail = $_SESSION['user_email'];
+} else {
+    $userID = null;
+    $username = null;
+    $userEmail = null;
+}
+
 require_once 'connection.php';
 require 'src/User.php';
 require 'src/Tweet.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    /** @ToDo: walidacja  */
     $tweet = new Tweet;
 
-    $tweet->setUserId(1); //
+    $tweet->setUserId($userID); //
     $tweet->setText($_POST['text']);
     $tweet->setCreationDate(date('Y-m-d H:i:s'));
 
@@ -15,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $tweets = Tweet::loadAllTweets($conn);
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -30,39 +47,13 @@ $tweets = Tweet::loadAllTweets($conn);
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>                        
-                    </button>
-                    <a class="navbar-brand" href="#">Something Like Twitter</a>
-                </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Page 1-1</a></li>
-                                <li><a href="#">Page 1-2</a></li>
-                                <li><a href="#">Page 1-3</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Page 2</a></li>
-                        <li><a href="#">Page 3</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="page_register.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                        <li><a href="page_login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <!--NAV START-->
+        <?php
+        include('includes/nav.php');
+        ?>
+        <!--NAV END-->
         <div class="jumbotron text-center">
-            <h1>Welcome, dear Guest <span class="glyphicon glyphicon-sunglasses"></span></h1>
+            <h1>Welcome, dear <?php echo ($username !== null) ? $username : 'Guest'; ?> <span class="glyphicon glyphicon-sunglasses"></span></h1>
             <p>This page is a simple clone of twitter.
                 Feel free and tweet something&nbsp;:)</p>
         </div>
@@ -72,13 +63,14 @@ $tweets = Tweet::loadAllTweets($conn);
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 tweet-send">
                     <form action="" method="post" role="form">
                         <div class="form-group">
-                            <p><textarea name="text" rows="4" class="form-control"></textarea></p>
+                            <p><textarea name="text" rows="4" class="form-control"<?php echo ($userID !== null) ? '' : 'disabled'; ?>></textarea></p>
                         </div>
-                        <button type="submit" class="btn btn-default btn-tweet">Add</button>
+                        <button type="submit" class="btn btn-default btn-tweet" <?php echo ($userID !== null) ? '' : 'disabled'; ?>>Add</button>
                     </form>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                     <div class="tweet-instruction">
+                        <!--Inny komunikat zależnie od tego czy zalogowany-->
                         Myśmy więc on jest ta: każda realność, która swoją kulturę, wyjść z części. Ale czyżby w rzeczy szczęśliwości doprowadzić. My możemy się niezgadza z niej płynącej szczęśliwości tej dostąpić miało; gdyby więc też to tedy?
                     </div>
                 </div>
@@ -92,6 +84,9 @@ $tweets = Tweet::loadAllTweets($conn);
                         echo '<div class="tweet">';
                         echo '<p>' . $tweet->getText() . '</p>';
                         echo '<span class="tweet-date">' . $tweet->getCreationDate() . '</span>';
+                        echo '<span class="tweet-username">' . '<a href="page_user?id=' . $tweet->getUserId() . '">' 
+                                . User::getUsernameById($conn, $tweet->getUserId()) . '</a></span>';
+                        echo '<a href="page_tweet.php?id=' . $tweet->getId() . '" class="open-tweet">open tweet >>></a>';
                         echo '</div>';
                         echo '</div>';
                     }

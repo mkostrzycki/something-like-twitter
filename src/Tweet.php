@@ -3,35 +3,81 @@
 class Tweet
 {
 
+    /**
+     * Stała określająca ID obiektu nieistniejącego w bazie.
+     */
     const NON_EXISTING_ID = -1;
 
+    /**
+     *
+     * @var int ID tweeta
+     */
     private $id;
+    
+    /**
+     *
+     * @var int ID użytkownika, który stworzył tweeta
+     */
     private $userId;
+    
+    /**
+     *
+     * @var string Treść tweeta
+     */
     private $text;
+    
+    /**
+     *
+     * @var date Data stworzenia tweeta
+     */
     private $creationDate;
+    
+    /////////////////////////////////
 
+    /**
+     * Konstruktor ustawia ID na -1 a pozostałe atrybuty na puste stringi.
+     */
     public function __construct()
     {
         $this->id = self::NON_EXISTING_ID;
+        $this->userId = self::NON_EXISTING_ID;
+        $this->text = '';
+        $this->creationDate = '';
     }
 
     /////////////////////////////////
 
+    /**
+     * Zwraca ID tweeta
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * Zwraca ID użytkownika, który stworzył tweeta
+     * @return int
+     */
     public function getUserId()
     {
         return $this->userId;
     }
 
+    /**
+     * Zwraca treść tweeta
+     * @return string
+     */
     public function getText()
     {
         return $this->text;
     }
 
+    /**
+     * Zwraca datę stworzenia tweeta
+     * @return date
+     */
     public function getCreationDate()
     {
         return $this->creationDate;
@@ -39,18 +85,33 @@ class Tweet
 
     //////////////////////////////////
 
+    /**
+     * Ustawia ID użytkownika, który stworzył tweeta
+     * @param int $userId ID użytkownika, który stworzył tweeta
+     * @return $this
+     */
     public function setUserId($userId)
     {
         $this->userId = $userId;
         return $this;
     }
 
+    /**
+     * Ustawia treść tweeta
+     * @param string $text Treść tweeta
+     * @return $this
+     */
     public function setText($text)
     {
         $this->text = $text;
         return $this;
     }
 
+    /**
+     * Ustawia datę stworzenia tweeta
+     * @param date $creationDate Data stworzenia tweeta
+     * @return $this
+     */
     public function setCreationDate($creationDate)
     {
         $this->creationDate = $creationDate;
@@ -59,6 +120,12 @@ class Tweet
     
     //////////////////////////////////////
     
+    /**
+     * Pobiera z bazy danych tweet o podanym ID. Zwraca obiekt klasy Tweet lub null, jeżeli w bazie nie ma podanego ID.
+     * @param PDO $conn Połączenie z bazą danych
+     * @param int $id ID tweeta
+     * @return \Tweet|null
+     */
     static public function loadTweetById(PDO $conn, $id)
     {
         $stmt = $conn->prepare('SELECT * FROM Tweets WHERE id=:id');
@@ -79,7 +146,13 @@ class Tweet
         return null;
     }
     
-    public function loadAllTweetsByUserId(PDO $conn, $userId)
+    /**
+     * Zwraca tablicę obiektów klasy Tweet - wszystkie tweety stworzone przez użytkownika o wskazanym ID.
+     * @param PDO $conn Połączenie z bazą danych
+     * @param int $userId ID użytkownika, który stworzył tweeta
+     * @return \Tweet
+     */
+    static public function loadAllTweetsByUserId(PDO $conn, $userId)
     {
         $stmt = $conn->prepare("SELECT Tweets.id, Tweets.user_id, Tweets.tweet_text, Tweets.creation_date FROM Tweets JOIN Users ON Tweets.user_id=Users.id WHERE Users.id=:id ORDER BY Tweets.id DESC");
 
@@ -87,11 +160,11 @@ class Tweet
         
         $ret = [];
 
-        $result = $stmt->execute(['id' => $userId]);
+        $result = $stmt->execute(['id' => $userId]); 
 
-        if ($result !== false && $result->rowCount() != 0) {
+        if ($result !== false && $stmt->rowCount() != 0) {
 
-            foreach ($result as $row) {
+            foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
                 $loadedTweet = new Tweet();
                 $loadedTweet->id = $row['id'];
                 $loadedTweet->userId = $row['user_id'];
@@ -105,6 +178,11 @@ class Tweet
         return $ret;
     }
     
+    /**
+     * Zwraca tablicę obiektów klasy Tweet - wszystkie tweety znajdujące się w bazie danych.
+     * @param PDO $conn Połączenie z bazą danych
+     * @return \Tweet
+     */
     static public function loadAllTweets(PDO $conn)
     {
         $sql = "SELECT * FROM Tweets ORDER BY id DESC";
@@ -129,6 +207,11 @@ class Tweet
         return $ret;
     }
     
+    /**
+     * Dodaje tweeta do bazy danych lub uaktualnia, jeżeli tweet z takim ID już istnieje.
+     * @param PDO $conn Połączenie z bazą danych
+     * @return boolean
+     */
     public function saveToDB(PDO $conn)
     {
         if ($this->id == self::NON_EXISTING_ID) {
