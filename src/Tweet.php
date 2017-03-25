@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Klasa do obsługi tweetów.
+ */
 class Tweet
 {
 
@@ -92,7 +95,7 @@ class Tweet
      */
     public function setUserId($userId)
     {
-        $this->userId = $userId;
+        $this->userId = (int) $userId;
         return $this;
     }
 
@@ -103,7 +106,7 @@ class Tweet
      */
     public function setText($text)
     {
-        $this->text = $text;
+        $this->text = (string) $text;
         return $this;
     }
 
@@ -114,7 +117,7 @@ class Tweet
      */
     public function setCreationDate($creationDate)
     {
-        $this->creationDate = $creationDate;
+        $this->creationDate = (string) $creationDate;
         return $this;
     }
     
@@ -221,16 +224,19 @@ class Tweet
             );
 
             $result = $stmt->execute(
-                    ['userId' => $this->userId, 'text' => $this->text, 'creationDate' => $this->creationDate]
+                    [
+                        'userId' => $this->userId, 
+                        'text' => $this->text, 
+                        'creationDate' => $this->creationDate
+                    ]
             );
 
-            if ($result !== false) {
+            if ($result === true) {
                 $this->id = $conn->lastInsertId();
 
                 return true;
-            } else {
-                echo ':(';
             }
+            
         } else {
             //Updating tweet in DB
             $stmt = $conn->prepare(
@@ -238,8 +244,12 @@ class Tweet
             );
 
             $result = $stmt->execute(
-                    ['userId' => $this->userId, 'text' => $this->text,
-                        'creationDate' => $this->creationDate, 'id' => $this->id]
+                    [
+                        'userId' => $this->userId, 
+                        'text' => $this->text,
+                        'creationDate' => $this->creationDate, 
+                        'id' => $this->id
+                    ]
             );
 
             if ($result === true) {

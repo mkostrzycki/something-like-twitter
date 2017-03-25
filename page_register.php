@@ -5,12 +5,13 @@ if (isset($_SESSION['user_id'])) {
     header('Location: index.php');
 }
 
-require_once 'connection.php';
+require_once 'config/connection.php';
 require 'src/User.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     /** @ToDo: walidacja */
+    
     if (User::loadUserByEmail($conn, $_POST['email']) === null) {
 
         $user = new User();

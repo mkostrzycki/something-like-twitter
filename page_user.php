@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
     $userID = $visitorUserID; /** @ToDo: Zmienna na potrzeby NAV - do poprawienia */
 }
 
-require_once 'connection.php';
+require_once 'config/connection.php';
 require 'src/User.php';
 require 'src/Tweet.php';
 require 'src/Message.php';
@@ -26,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message->setRecipientId($pageUserID);
     $message->setText($_POST['text']);
     $message->setCreationDate(date('Y-m-d H:i:s'));
+    
+    $message->saveToDB($conn);
     
     /** @ToDo: Komunikat o wysłaniu wiadomości. */
 }

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Klasa do obsługi komentarzy
+ */
 class Comment
 {
     /**
@@ -82,22 +85,26 @@ class Comment
     
     public function setUserId($userId)
     {
-        $this->userId = $userId;
+        $this->userId = (int) $userId;
+        return $this;
     }
 
     public function setTweetId($tweetId)
     {
-        $this->tweetId = $tweetId;
+        $this->tweetId = (int) $tweetId;
+        return $this;
     }
 
     public function setText($text)
     {
-        $this->text = $text;
+        $this->text = (string) $text;
+        return $this;
     }
 
     public function setCreationDate($creationDate)
     {
-        $this->creationDate = $creationDate;
+        $this->creationDate = (string) $creationDate;
+        return $this;
     }
 
     /////////////////////////////////
@@ -159,16 +166,20 @@ class Comment
             );
 
             $result = $stmt->execute(
-                    ['userId' => $this->userId, 'tweetId' => $this->tweetId, 'text' => $this->text, 'creationDate' => $this->creationDate]
+                    [
+                        'userId' => $this->userId, 
+                        'tweetId' => $this->tweetId, 
+                        'text' => $this->text, 
+                        'creationDate' => $this->creationDate
+                    ]
             );
 
-            if ($result !== false) {
+            if ($result === true) {
                 $this->id = $conn->lastInsertId();
 
                 return true;
-            } else {
-                echo ':(';
             }
+            
         } else {
             //Updating comment in DB
             $stmt = $conn->prepare(
@@ -176,8 +187,13 @@ class Comment
             );
 
             $result = $stmt->execute(
-                    ['userId' => $this->userId, 'tweetId' => $this->tweetId, 'text' => $this->text,
-                        'creationDate' => $this->creationDate, 'id' => $this->id]
+                    [
+                        'userId' => $this->userId, 
+                        'tweetId' => $this->tweetId, 
+                        'text' => $this->text,
+                        'creationDate' => $this->creationDate, 
+                        'id' => $this->id
+                    ]
             );
 
             if ($result === true) {

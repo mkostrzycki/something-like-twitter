@@ -14,7 +14,7 @@ if (
     $userEmail = null;
 }
 
-require_once 'connection.php';
+require_once 'config/connection.php';
 require 'src/User.php';
 require 'src/Tweet.php';
 

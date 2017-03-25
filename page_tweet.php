@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     $userID = $_SESSION['user_id'];
 }
 
-require_once 'connection.php';
+require_once 'config/connection.php';
 require 'src/User.php';
 require 'src/Tweet.php';
 require 'src/Comment.php';

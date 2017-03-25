@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Klasa do obsługi użytkowników.
+ */
 class User
 {
 
@@ -92,7 +95,7 @@ class User
      */
     public function setUsername($username)
     {
-        $this->username = $username;
+        $this->username = (string) $username;
         return $this;
     }
 
@@ -103,7 +106,7 @@ class User
      */
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->email = (string) $email;
         return $this;
     }
 
@@ -135,7 +138,11 @@ class User
             );
 
             $result = $stmt->execute(
-                    ['username' => $this->username, 'email' => $this->email, 'pass' => $this->hashPass]
+                    [
+                        'username' => $this->username, 
+                        'email' => $this->email, 
+                        'pass' => $this->hashPass
+                    ]
             );
 
             if ($result === true) {
@@ -150,8 +157,12 @@ class User
             );
 
             $result = $stmt->execute(
-                    ['username' => $this->username, 'email' => $this->email,
-                        'hash_pass' => $this->hashPass, 'id' => $this->id]
+                    [
+                        'username' => $this->username, 
+                        'email' => $this->email,
+                        'hash_pass' => $this->hashPass, 
+                        'id' => $this->id
+                    ]
             );
 
             if ($result === true) {
