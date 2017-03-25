@@ -82,11 +82,14 @@ $tweets = Tweet::loadAllTweets($conn);
                     foreach ($tweets as $tweet) {
                         echo '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">';
                         echo '<div class="tweet">';
+                        echo '<span class="tweet-username">' . '<a href="page_user.php?id=' 
+                             . $tweet->getUserId() . '"><span class="glyphicon glyphicon-user"></span> ' 
+                             . User::getUsernameById($conn, $tweet->getUserId()) . '</a></span>';
                         echo '<p>' . $tweet->getText() . '</p>';
-                        echo '<span class="tweet-date">' . $tweet->getCreationDate() . '</span>';
-                        echo '<span class="tweet-username">' . '<a href="page_user.php?id=' . $tweet->getUserId() . '">' 
-                                . User::getUsernameById($conn, $tweet->getUserId()) . '</a></span>';
-                        echo '<a href="page_tweet.php?id=' . $tweet->getId() . '" class="open-tweet">open tweet >>></a>';
+                        echo '<span class="tweet-date"><span class="glyphicon glyphicon-calendar"></span> ' 
+                             . $tweet->getCreationDate() . '</span>';
+                        echo '<span class="open-tweet">' . '<a href="page_tweet.php?id=' 
+                             . $tweet->getId() . '"><span class="glyphicon glyphicon-hand-right"></span> open</a></span>';
                         echo '</div>';
                         echo '</div>';
                     }

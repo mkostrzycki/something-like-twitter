@@ -31,20 +31,71 @@ h3 {
     padding: 10px;
 }
 
-.tweet {
+.tweet,
+.comment,
+.message {
     border-right: 12px solid #302041;
     border-bottom: 12px solid #302041;
-    background-color: #B5A8C4;
     padding: 5px;
     margin: 10px -5px;
 }
 
-.tweet-date {
+.tweet {
+    background-color: #B5A8C4;
+    color: black;
+}
+
+.comment {
+    background-color: #F0F8D1;
+    color: black;
+}
+
+.message {
+    background-color: #FFF6D7;
+    color: black;
+}
+
+.tweet-date,
+.comment-date,
+.message-date {
     font-size: small;
     color: #635771;
 }
 
-.tweets {
+.open-tweet,
+.open-message {
+    border-left: 1px solid;
+    margin-left: 2px;
+    padding-left: 2px;
+}
+
+.tweet-username a {
+    font-size: small;
+    color: #635771;
+}
+
+.comment-username a {
+    font-size: small;
+    color: #B4C570;
+}
+
+.message-username a {
+    font-size: small;
+    color: #CEB974;
+}
+
+.open-tweet a {
+    font-size: small;
+    color: #635771;
+}
+
+.open-message a {
+    font-size: small;
+    color: #CEB974;
+}
+
+.tweets,
+.messages {
   /* wyświetlają się horyzontalnie */
   display: flex;
   /* łamanie wierszy */

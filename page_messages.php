@@ -48,11 +48,14 @@ $receivedMessages = Message::loadAllMessagesByRecipientId($conn, $userID);
                     foreach ($receivedMessages as $message) {
                         echo '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">';
                         echo '<div class="message">';
+                        echo '<span class="message-username">' . '<a href="page_user?id=' 
+                             . $message->getSenderId() . '"><span class="glyphicon glyphicon-user"></span> '
+                             . User::getUsernameById($conn, $message->getSenderId()) . '</a></span>';
                         echo '<p>' . $message->getText() . '</p>';
-                        echo '<span class="message-date">' . $message->getCreationDate() . '</span>';
-                        echo '<span class="message-username">' . '<a href="page_user?id=' . $message->getSenderId() . '">'
-                        . User::getUsernameById($conn, $message->getSenderId()) . '</a></span>';
-                        echo '<a href="page_message.php?id=' . $message->getId() . '" class="open-message">open message >>></a>';
+                        echo '<span class="message-date"><span class="glyphicon glyphicon-calendar"></span> ' 
+                             . $message->getCreationDate() . '</span>';
+                        echo '<span class="open-message">' . '<a href="page_message.php?id=' 
+                             . $message->getId() . '"><span class="glyphicon glyphicon-hand-right"></span> open</a></span>';
                         echo '</div>';
                         echo '</div>';
                     }
@@ -66,11 +69,14 @@ $receivedMessages = Message::loadAllMessagesByRecipientId($conn, $userID);
                     foreach ($sentMessages as $message) {
                         echo '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">';
                         echo '<div class="message">';
+                        echo '<span class="message-username">' . '<a href="page_user?id=' 
+                             . $message->getRecipientId() . '"><span class="glyphicon glyphicon-user"></span> '
+                             . User::getUsernameById($conn, $message->getRecipientId()) . '</a></span>';
                         echo '<p>' . $message->getText() . '</p>';
-                        echo '<span class="message-date">' . $message->getCreationDate() . '</span>';
-                        echo '<span class="message-username">' . '<a href="page_user?id=' . $message->getRecipientId() . '">'
-                        . User::getUsernameById($conn, $message->getRecipientId()) . '</a></span>';
-                        echo '<a href="page_message.php?id=' . $message->getId() . '" class="open-message">open message >>></a>';
+                        echo '<span class="message-date"><span class="glyphicon glyphicon-calendar"></span> ' 
+                             . $message->getCreationDate() . '</span>';
+                        echo '<span class="open-message">' . '<a href="page_message.php?id=' 
+                             . $message->getId() . '"><span class="glyphicon glyphicon-hand-right"></span> open</a></span>';
                         echo '</div>';
                         echo '</div>';
                     }
