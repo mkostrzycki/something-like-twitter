@@ -138,7 +138,7 @@ class User
                     ['username' => $this->username, 'email' => $this->email, 'pass' => $this->hashPass]
             );
 
-            if ($result !== false) {
+            if ($result === true) {
                 $this->id = $conn->lastInsertId();
 
                 return true;

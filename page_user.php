@@ -3,18 +3,35 @@ session_start();
 if (!isset($_SESSION['user_id'])) {
     // redirect
     header('Location: index.php');
+} else {
+    $visitorUserID = $_SESSION['user_id'];
+    $userID = $visitorUserID; /** @ToDo: Zmienna na potrzeby NAV - do poprawienia */
 }
 
 require_once 'connection.php';
 require 'src/User.php';
 require 'src/Tweet.php';
+require 'src/Message.php';
 
 // z geta mamy ID
-$userID = $_GET['id'];
+$pageUserID = $_GET['id'];
 // walidacja
 
-$user = User::loadUserById($conn, $userID);
-$userTweets = Tweet::loadAllTweetsByUserId($conn, $userID);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    /** @ToDo: walidacja  */
+    $message = new Message;
+    
+    $message->setSenderId($visitorUserID);
+    $message->setRecipientId($pageUserID);
+    $message->setText($_POST['text']);
+    $message->setCreationDate(date('Y-m-d H:i:s'));
+    
+    /** @ToDo: Komunikat o wysłaniu wiadomości. */
+}
+
+$user = User::loadUserById($conn, $pageUserID);
+$userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +64,23 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $userID);
                     ?>
                 </div>
             </div>
-            <!--jeżeli oglądamy stronę innego użytkownika to powinniśmy mieć możliwość wysłania do niego wiadomości-->
+            <?php
+            // Jeżeli oglądamy stronę innego użytkownika to powinniśmy mieć możliwość wysłania do niego wiadomości.
+            if ($visitorUserID !== $pageUserID) {
+                echo '<div class="row">';
+                echo '<h3>Send Message</h3>';
+                echo '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 message-send">';
+                echo '<form action="" method="post" role="form">';
+                echo '<div class="form-group">';
+                echo '<p><textarea name="text" rows="4" class="form-control"></textarea></p>';
+                echo '</div>';
+                echo '<button type="submit" class="btn btn-default btn-send-message">Send</button>';
+                echo '</form>';
+                echo '</div>';
+                echo '</div>';
+                /** @ToDo: Komunikat o wysłaniu wiadomości. */
+            }
+            ?>
             <div class="row">
                 <h3>All Tweets by User</h3>
                 <div class="tweets">

@@ -10,6 +10,10 @@ class Message
      */
     const NON_EXISTING_ID = -1;
     
+    const MESSAGE_IS_READ = 1;
+    
+    const MESSAGE_IS_UNREAD = 0;
+    
     /**
      *
      * @var int ID wiadomości
@@ -58,7 +62,7 @@ class Message
         $this->recipientId = self::NON_EXISTING_ID;
         $this->text = '';
         $this->creationDate = '';
-        $this->isRead = 0;
+        $this->isRead = self::MESSAGE_IS_UNREAD;
     }
 
     /////////////////////////////////
@@ -126,7 +130,7 @@ class Message
      */
     public function setSenderId($senderId)
     {
-        $this->senderId = $senderId;
+        $this->senderId = (int) $senderId;
         return $this;
     }
 
@@ -137,7 +141,7 @@ class Message
      */
     public function setRecipientId($recipientId)
     {
-        $this->recipientId = $recipientId;
+        $this->recipientId = (int) $recipientId;
         return $this;
     }
 
@@ -148,7 +152,7 @@ class Message
      */
     public function setText($text)
     {
-        $this->text = $text;
+        $this->text = (string) $text;
         return $this;
     }
 
@@ -159,18 +163,27 @@ class Message
      */
     public function setCreationDate($creationDate)
     {
-        $this->creationDate = $creationDate;
+        $this->creationDate = (string) $creationDate;
         return $this;
     }
-
+    
     /**
-     * Ustawia status wiadomości
-     * @param int $isRead 0 - wiadomość nieprzeczytana, 1 - wiadomość przeczytana
+     * Ustawia wiadomość jako przeczytaną
      * @return $this
      */
-    public function setIsRead($isRead)
+    public function setMessageAsRead()
     {
-        $this->isRead = $isRead;
+        $this->isRead = self::MESSAGE_IS_READ;
+        return $this;
+    }
+    
+    /**
+     * Ustawia wiadomość jako nieprzeczytaną
+     * @return $this
+     */
+    public function setMessageAsUnread()
+    {
+        $this->isRead = self::MESSAGE_IS_UNREAD;
         return $this;
     }
 
@@ -195,8 +208,8 @@ class Message
             $loadedMessage->senderId = $row['sender_id'];
             $loadedMessage->recipientId = $row['recipient_id'];
             $loadedMessage->text = $row['message_text'];
+            $loadedMessage->isRead = $row['is_read'];
             $loadedMessage->creationDate = $row['creation_date'];
-            $loadedMessage->isRead = $row['read'];
 
             return $loadedMessage;
         }
@@ -213,7 +226,7 @@ class Message
     static public function loadAllMessagesBySenderId(PDO $conn, $senderId)
     {
         $stmt = $conn->prepare(
-                  "SELECT Messages.id, Messages.sender_id, Messages.recipient_id, Messages.message_text, Messages.creation_date, Messages.read "
+                  "SELECT Messages.id, Messages.sender_id, Messages.recipient_id, Messages.message_text, Messages.is_read, Messages.creation_date "
                 . "FROM Messages JOIN Users ON Messages.sender_id=Users.id "
                 . "WHERE Users.id=:id ORDER BY Messages.id DESC");
          
@@ -229,8 +242,8 @@ class Message
                 $loadedMessage->senderId = $row['sender_id'];
                 $loadedMessage->recipientId = $row['recipient_id'];
                 $loadedMessage->text = $row['message_text'];
+                $loadedMessage->isRead = $row['is_read'];
                 $loadedMessage->creationDate = $row['creation_date'];
-                $loadedMessage->isRead = $row['read'];
                 
                 $ret[] = $loadedMessage;
             }
@@ -248,7 +261,7 @@ class Message
     static public function loadAllMessagesByRecipientId(PDO $conn, $recipientId)
     {
         $stmt = $conn->prepare(
-                  "SELECT Messages.id, Messages.sender_id, Messages.recipient_id, Messages.message_text, Messages.creation_date, Messages.read "
+                  "SELECT Messages.id, Messages.sender_id, Messages.recipient_id, Messages.message_text, Messages.is_read, Messages.creation_date "
                 . "FROM Messages JOIN Users ON Messages.recipient_id=Users.id "
                 . "WHERE Users.id=:id ORDER BY Messages.id DESC");
          
@@ -264,8 +277,8 @@ class Message
                 $loadedMessage->senderId = $row['sender_id'];
                 $loadedMessage->recipientId = $row['recipient_id'];
                 $loadedMessage->text = $row['message_text'];
+                $loadedMessage->isRead = $row['is_read'];
                 $loadedMessage->creationDate = $row['creation_date'];
-                $loadedMessage->isRead = $row['read'];
                 
                 $ret[] = $loadedMessage;
             }
@@ -284,29 +297,39 @@ class Message
         if ($this->id == self::NON_EXISTING_ID) {
             //Saving new message to DB
             $stmt = $conn->prepare(
-                    'INSERT INTO Messages(sender_id, recipient_id, message_text, creation_date, read) VALUES (:senderId, :recipientId, :text, :creationDate, :read)'
+                'INSERT INTO Messages(sender_id, recipient_id, message_text, is_read, creation_date) VALUES (:senderId, :recipientId, :text, :is_read, :creationDate)'
             );
 
             $result = $stmt->execute(
-                    ['senderId' => $this->senderId, 'recipientId' => $this->recipientId, 'text' => $this->text, 'creationDate' => $this->creationDate, 'read' => $this->isRead]
+                    [
+                        'senderId' => $this->senderId, 
+                        'recipientId' => $this->recipientId, 
+                        'text' => $this->text, 
+                        'is_read' => $this->isRead, 
+                        'creationDate' => $this->creationDate
+                    ]
             );
-
-            if ($result !== false) {
+            
+            if ($result === true) {
                 $this->id = $conn->lastInsertId();
 
                 return true;
-            } else {
-                echo ':(';
             }
         } else {
             //Updating message in DB
             $stmt = $conn->prepare(
-                    'UPDATE Messages SET senderId=:senderId, recipientId=:recipientId, message_text=:text, creation_date=:creationDate, read=:read WHERE id=:id'
+                    'UPDATE Messages SET senderId=:senderId, recipientId=:recipientId, message_text=:text, creation_date=:creationDate, is_read=:read WHERE id=:id'
             );
 
             $result = $stmt->execute(
-                    ['senderId' => $this->senderId, 'recipientId' => $this->recipientId, 'text' => $this->text,
-                        'creationDate' => $this->creationDate, 'read' => $this->isRead, 'id' => $this->id]
+                    [
+                        'senderId' => $this->senderId, 
+                        'recipientId' => $this->recipientId, 
+                        'text' => $this->text,
+                        'is_read' => $this->isRead, 
+                        'creationDate' => $this->creationDate, 
+                        'id' => $this->id
+                    ]
             );
 
             if ($result === true) {

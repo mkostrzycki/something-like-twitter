@@ -84,7 +84,7 @@ $tweets = Tweet::loadAllTweets($conn);
                         echo '<div class="tweet">';
                         echo '<p>' . $tweet->getText() . '</p>';
                         echo '<span class="tweet-date">' . $tweet->getCreationDate() . '</span>';
-                        echo '<span class="tweet-username">' . '<a href="page_user?id=' . $tweet->getUserId() . '">' 
+                        echo '<span class="tweet-username">' . '<a href="page_user.php?id=' . $tweet->getUserId() . '">' 
                                 . User::getUsernameById($conn, $tweet->getUserId()) . '</a></span>';
                         echo '<a href="page_tweet.php?id=' . $tweet->getId() . '" class="open-tweet">open tweet >>></a>';
                         echo '</div>';
