@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // getUserByEmail
     $user = User::loadUserByEmail($conn, $email);
-    var_dump($user);
 
     if ($user !== null) {
 
@@ -31,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // redirect
             header('Location: index.php');
         } else {
-            $message = 'Incorrect login and/or password!';
+            $errorMessage = 'Incorrect login and/or password!';
         }
     } else {
-        $message = 'Incorrect login and/or password!';
+        $errorMessage = 'Incorrect login and/or password!';
     }
 }
 ?>
@@ -57,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <?php
-                    if (isset($message)) {
-                        echo $message;
+                    if (isset($errorMessage)) {
+                        echo $errorMessage;
                     }
                     ?>
                 </div>
@@ -77,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </form>
                     </div>
                     <p>You are not registered? <a href="page_register.php">Create an account</a></p>
+                    <p><a href="index.php">Return to main page</a></p>
                 </div>
             </div>
         </div>

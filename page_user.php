@@ -19,7 +19,8 @@ $pageUserID = $_GET['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    /** @ToDo: walidacja  */
+    /** @ToDo: Filter received data  */
+    
     $message = new Message;
     
     $message->setSenderId($visitorUserID);
@@ -29,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $message->saveToDB($conn);
     
-    /** @ToDo: Komunikat o wysłaniu wiadomości. */
+    $successMessage = 'Message to <strong>' . User::getUsernameById($conn, $pageUserID) . '</strong> has been successfully sent.';
 }
 
 $user = User::loadUserById($conn, $pageUserID);
@@ -56,6 +57,7 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
         ?>
         <!--NAV END-->
         <div class="container">
+            
             <!--dane użytkownika-->
             <div class="row">
                 <h3>User Info</h3>
@@ -63,6 +65,18 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
                     <?php
                     echo '<p>' . $user->getUsername() . '</p>';
                     echo '<p>' . $user->getEmail() . '</p>';
+                    if ($visitorUserID == $pageUserID) {
+                        echo '<p><a href="page_user_edit.php">Edit User</a></p>';
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <?php
+                    if (isset($successMessage)) {
+                        echo $successMessage;
+                    }
                     ?>
                 </div>
             </div>

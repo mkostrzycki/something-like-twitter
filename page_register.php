@@ -10,7 +10,7 @@ require 'src/User.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    /** @ToDo: walidacja */
+    /** @ToDo: Filter received data */
     
     if (User::loadUserByEmail($conn, $_POST['email']) === null) {
 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // redirect
         header('Location: index.php');
     } else {
-        $message = 'User with this email address already exist!';
+        $errorMessage = 'User with this email address already exist!';
     }
 }
 ?>
@@ -50,8 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="row">
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <?php
-                    if (isset($message)) {
-                        echo $message;
+                    if (isset($errorMessage)) {
+                        echo $errorMessage;
                     }
                     ?>
                 </div>
@@ -73,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </form>
                     </div>
                     <p>Already registered? <a href="page_login.php">Log in here</a></p>
+                    <p><a href="index.php">Return to main page</a></p>
                 </div>
             </div>
         </div>
