@@ -318,7 +318,7 @@ class Message
         } else {
             //Updating message in DB
             $stmt = $conn->prepare(
-                    'UPDATE Messages SET senderId=:senderId, recipientId=:recipientId, message_text=:text, creation_date=:creationDate, is_read=:read WHERE id=:id'
+                    'UPDATE Messages SET sender_id=:senderId, recipient_id=:recipientId, message_text=:text, creation_date=:creationDate, is_read=:read WHERE id=:id'
             );
 
             $result = $stmt->execute(
@@ -326,7 +326,7 @@ class Message
                         'senderId' => $this->senderId, 
                         'recipientId' => $this->recipientId, 
                         'text' => $this->text,
-                        'is_read' => $this->isRead, 
+                        'read' => $this->isRead, 
                         'creationDate' => $this->creationDate, 
                         'id' => $this->id
                     ]

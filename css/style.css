@@ -41,6 +41,7 @@ h3 {
 }
 
 .tweet {
+    position: relative;
     background-color: #B5A8C4;
     color: black;
 }
@@ -51,6 +52,7 @@ h3 {
 }
 
 .message {
+    position: relative;
     background-color: #FFF6D7;
     color: black;
 }
@@ -64,9 +66,8 @@ h3 {
 
 .open-tweet,
 .open-message {
-    border-left: 1px solid;
-    margin-left: 2px;
-    padding-left: 2px;
+    position: absolute;
+    right: 5px;
 }
 
 .tweet-username a {
@@ -92,6 +93,14 @@ h3 {
 .open-message a {
     font-size: small;
     color: #CEB974;
+}
+
+.message-unread {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 150%;
+    color: #302041;
 }
 
 .tweets,

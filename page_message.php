@@ -17,8 +17,11 @@ $messageID = $_GET['id'];
 $message = Message::loadMessageById($conn, $messageID);
 
 // Jeżeli wszedł tu odbiorca, to oznaczamy wiadomość jako przeczytaną
-if ($message->getRecipientId() === $userID) {
+if ($message->getRecipientId() == $userID && $message->getIsRead() == $message::MESSAGE_IS_UNREAD) {
+
     $message->setMessageAsRead();
+
+    $message->saveToDB($conn);
 }
 ?>
 <!DOCTYPE html>
@@ -46,8 +49,24 @@ if ($message->getRecipientId() === $userID) {
                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
                     <?php
                     echo '<div class="message">';
+                    
+                    echo '<p>Message from: ';
+                    echo '<span class="message-username">' . '<a href="page_user?id='
+                    . $message->getSenderId() . '"><span class="glyphicon glyphicon-user"></span> '
+                    . User::getUsernameById($conn, $message->getSenderId()) . '</a></span>';
+                    echo '</p>';
+                    
+                    echo '<p>Message to: ';
+                    echo '<span class="message-username">' . '<a href="page_user?id='
+                    . $message->getRecipientId() . '"><span class="glyphicon glyphicon-user"></span> '
+                    . User::getUsernameById($conn, $message->getRecipientId()) . '</a></span>';
+                    echo '</p>';
+                    
                     echo '<p>' . $message->getText() . '</p>';
-                    echo '<span class="message-date">' . $message->getCreationDate() . '</span>';
+                    
+                    echo '<span class="message-date"><span class="glyphicon glyphicon-calendar"></span> ' 
+                    . $message->getCreationDate() . '</span>';
+                    
                     echo '</div>';
                     ?>
                 </div>
