@@ -12,6 +12,21 @@ h3 {
     margin-top: 50px;
 }
 
+.login,
+.register
+{
+    margin-left: 20%;
+    margin-top: 10%;
+}
+
+.login label,
+.register label,
+.login p,
+.register p
+{
+    color: #B5A8C4;
+}
+
 .tweet-send {
     margin-bottom: 15px;
     padding: 0px;
