@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($somethingChange) {
             $user->saveToDB($conn);
 
-            // uaktualnij dane użytkownika w sesji
+            // update user data in session
             $_SESSION['username'] = $user->getUsername();
             $_SESSION['user_email'] = $user->getEmail();
 
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                     <?php
                     if (isset($successMessage)) {
                         echo $successMessage;

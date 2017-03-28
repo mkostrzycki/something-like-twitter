@@ -13,9 +13,7 @@ require 'src/User.php';
 require 'src/Tweet.php';
 require 'src/Message.php';
 
-// z geta mamy ID
 $pageUserID = $_GET['id'];
-// walidacja
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
@@ -57,9 +55,7 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
         ?>
         <!--NAV END-->
         <div class="container">
-            
-            <!--dane użytkownika-->
-            <div class="row">
+            <div class="row user-data">
                 <h3>User Info</h3>
                 <div class="user-info">
                     <?php
@@ -72,7 +68,7 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                     <?php
                     if (isset($successMessage)) {
                         echo $successMessage;
@@ -81,7 +77,7 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
                 </div>
             </div>
             <?php
-            // Jeżeli oglądamy stronę innego użytkownika to powinniśmy mieć możliwość wysłania do niego wiadomości.
+            // User can send message to another user
             if ($visitorUserID !== $pageUserID) {
                 echo '<div class="row">';
                 echo '<h3>Send Message</h3>';
@@ -94,7 +90,7 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
                 echo '</form>';
                 echo '</div>';
                 echo '</div>';
-                /** @ToDo: Komunikat o wysłaniu wiadomości. */
+                /** @ToDo: Add successMessage after message send */
             }
             ?>
             <div class="row">
