@@ -33,7 +33,7 @@ CREATE TABLE `Comments` (
   KEY `tweet_id` (`tweet_id`),
   CONSTRAINT `Comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`),
   CONSTRAINT `Comments_ibfk_2` FOREIGN KEY (`tweet_id`) REFERENCES `Tweets` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `Comments` (
 
 LOCK TABLES `Comments` WRITE;
 /*!40000 ALTER TABLE `Comments` DISABLE KEYS */;
+INSERT INTO `Comments` VALUES (1,13,5,'sadadasd','2017-03-25 18:38:06');
 /*!40000 ALTER TABLE `Comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,14 +58,14 @@ CREATE TABLE `Messages` (
   `sender_id` int(11) NOT NULL,
   `recipient_id` int(11) NOT NULL,
   `message_text` text COLLATE utf8_polish_ci,
-  `read` tinyint(4) DEFAULT NULL,
+  `is_read` tinyint(4) DEFAULT NULL,
   `creation_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sender_id` (`sender_id`),
   KEY `recipient_id` (`recipient_id`),
   CONSTRAINT `Messages_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `Users` (`id`),
   CONSTRAINT `Messages_ibfk_2` FOREIGN KEY (`recipient_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,6 +74,7 @@ CREATE TABLE `Messages` (
 
 LOCK TABLES `Messages` WRITE;
 /*!40000 ALTER TABLE `Messages` DISABLE KEYS */;
+INSERT INTO `Messages` VALUES (1,13,1,'Widomosc numer trzy :)',0,'2017-03-25 17:45:41'),(2,13,1,'Wiadomość',0,'2017-03-25 17:53:40'),(3,13,1,'asdasd',0,'2017-03-25 18:29:35'),(4,13,1,'asdscasxwvx',0,'2017-03-25 18:29:38'),(5,13,1,'sdfd sfsaf afafrftgyhyh',0,'2017-03-25 18:29:43'),(6,14,13,'Młodości! dodaj mi skrzydła!\r\nNiech nad martwym wzlecę światem...',1,'2017-03-26 12:54:49'),(7,14,13,'Tam sięgaj, gdzie wzrok nie sięga;\r\nŁam, czego rozum nie złamie:\r\nMłodości! orla twych lotów potęga,\r\nJako piorun twoje ramię.',0,'2017-03-26 12:55:40');
 /*!40000 ALTER TABLE `Messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +93,7 @@ CREATE TABLE `Tweets` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `Tweets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +102,7 @@ CREATE TABLE `Tweets` (
 
 LOCK TABLES `Tweets` WRITE;
 /*!40000 ALTER TABLE `Tweets` DISABLE KEYS */;
-INSERT INTO `Tweets` VALUES (1,1,'Lorem ipsum dolor','2017-03-03 15:04:53'),(2,1,'Tralalala\r\n','2017-03-03 15:05:07'),(3,1,'YOLO','2017-03-03 20:02:51');
+INSERT INTO `Tweets` VALUES (1,1,'Lorem ipsum dolor','2017-03-03 15:04:53'),(2,1,'Tralalala\r\n','2017-03-03 15:05:07'),(3,1,'YOLO','2017-03-03 20:02:51'),(4,13,'asdsadf','2017-03-25 17:11:34'),(5,13,'ssdfdxa','2017-03-25 18:26:28'),(6,14,'Litwo, ojczyzno moja...','2017-03-26 12:53:08');
 /*!40000 ALTER TABLE `Tweets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +120,7 @@ CREATE TABLE `Users` (
   `hash_pass` varchar(60) COLLATE utf8_polish_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +129,7 @@ CREATE TABLE `Users` (
 
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-INSERT INTO `Users` VALUES (1,'Maciek','lorem@ipsum.pl','$2y$10$dUxWqRkr8CkUVTLEw9jRuejiMqynsGA3NqId3ux8D7kU6Fr/f2FmS'),(10,'Majk','lorerfefrfm@ipsum.pl','$2y$10$GjR6Z.OFiuAwsng22b7w3uZzAzGvRp6.gtz/5zmY1A2m/K7HVmsqG'),(11,'user33','test@test.pl','$2y$10$axAXDzxviVLGd9kvixEKneAbA9QYtbJjglHtpYQmvMnPuwOAJi4mW');
+INSERT INTO `Users` VALUES (1,'Maciek','lorem@ipsum.pl','$2y$10$dUxWqRkr8CkUVTLEw9jRuejiMqynsGA3NqId3ux8D7kU6Fr/f2FmS'),(10,'Majk','lorerfefrfm@ipsum.pl','$2y$10$GjR6Z.OFiuAwsng22b7w3uZzAzGvRp6.gtz/5zmY1A2m/K7HVmsqG'),(11,'user33','test@test.pl','$2y$10$axAXDzxviVLGd9kvixEKneAbA9QYtbJjglHtpYQmvMnPuwOAJi4mW'),(13,'Jan III Testowy','jan@testowy.pl','$2y$10$LMb6J7iMm45iGa.NBrIuRuUme3.v2uII/1HksE0nVjfktO77WLPZG'),(14,'Adam Mickiewicz','adam@mickiewicz.pl','$2y$10$i5e7Krg9XcTZpX38RmJAJ.fYV8kYPi3HKvnYfBKkQOn1w/dElldHG');
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -140,4 +142,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-19 23:33:49
+-- Dump completed on 2017-03-28 17:55:34
