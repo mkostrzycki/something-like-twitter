@@ -9,13 +9,12 @@ require_once 'config/connection.php';
 require 'src/User.php';
 require 'src/Message.php';
 
-// z geta mamy ID
 $userID = $_GET['id'];
 
-//if ($userID !== $_SESSION['user_id']) {
-//    // redirect
-//    header('Location: index.php');
-//}
+if ($userID !== $_SESSION['user_id']) {
+    // redirect
+    header('Location: index.php');
+}
 
 $sentMessages = Message::loadAllMessagesBySenderId($conn, $userID);
 $receivedMessages = Message::loadAllMessagesByRecipientId($conn, $userID);
@@ -49,7 +48,7 @@ $receivedMessages = Message::loadAllMessagesByRecipientId($conn, $userID);
                         echo '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">';
                         echo '<div class="message">';
                         echo '<p>Message from: ';
-                        echo '<span class="message-username">' . '<a href="page_user?id=' 
+                        echo '<span class="message-username">' . '<a href="page_user.php?id='
                              . $message->getSenderId() . '"><span class="glyphicon glyphicon-user"></span> '
                              . User::getUsernameById($conn, $message->getSenderId()) . '</a></span>';
                         echo '</p>';
@@ -76,7 +75,7 @@ $receivedMessages = Message::loadAllMessagesByRecipientId($conn, $userID);
                         echo '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">';
                         echo '<div class="message">';
                         echo '<p>Message to: ';
-                        echo '<span class="message-username">' . '<a href="page_user?id=' 
+                        echo '<span class="message-username">' . '<a href="page_user.php?id='
                              . $message->getRecipientId() . '"><span class="glyphicon glyphicon-user"></span> '
                              . User::getUsernameById($conn, $message->getRecipientId()) . '</a></span>';
                         echo '</p>';

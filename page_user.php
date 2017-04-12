@@ -102,7 +102,8 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
                         echo '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">';
                         echo '<div class="tweet">';
                         echo '<p>' . $tweet->getText() . '</p>';
-                        echo '<span class="tweet-date">' . $tweet->getCreationDate() . '</span>';
+                        echo '<span class="tweet-date"><span class="glyphicon glyphicon-calendar"></span> '
+                            . $tweet->getCreationDate() . '</span>';
                         echo '</div>';
                         echo '</div>';
                     }

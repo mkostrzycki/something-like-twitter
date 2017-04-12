@@ -48,6 +48,11 @@ h3 {
     padding: 10px;
 }
 
+.comments {
+    margin-left: 30px;
+    margin-right: 20px;
+}
+
 .tweet,
 .comment,
 .message {

@@ -84,7 +84,7 @@ $comments = Comment::loadAllCommentsByTweetId($conn, $tweetID);
                     foreach ($comments as $comment) {
                         echo '<div class="row">';
                         echo '<div class="comment col-xs-12 col-sm-8 col-md-8 col-lg-6">';
-                        echo '<span class="tweet-username">' . '<a href="page_user?id=' . $comment->getUserId()
+                        echo '<span class="tweet-username">' . '<a href="page_user.php?id=' . $comment->getUserId()
                             . '"><span class="glyphicon glyphicon-user"></span> '
                             . User::getUsernameById($conn, $comment->getUserId()) . '</a></span>';
                         echo '<p>' . $comment->getText() . '</p>';
