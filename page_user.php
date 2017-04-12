@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $message->setSenderId($visitorUserID);
     $message->setRecipientId($pageUserID);
-    $message->setText($_POST['text']);
+    $messageText = htmlspecialchars($_POST['text'], ENT_QUOTES);
+    $message->setText($messageText);
     $message->setCreationDate(date('Y-m-d H:i:s'));
     
     $message->saveToDB($conn);
@@ -55,6 +56,15 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
         ?>
         <!--NAV END-->
         <div class="container">
+            <div class="row">
+                <?php
+                if (isset($successMessage)) {
+                    echo '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 alert alert-success">';
+                    echo $successMessage;
+                    echo '</div>';
+                }
+                ?>
+            </div>
             <div class="row user-data">
                 <h3>User Info</h3>
                 <div class="user-info">
@@ -67,21 +77,12 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
                     ?>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                    <?php
-                    if (isset($successMessage)) {
-                        echo $successMessage;
-                    }
-                    ?>
-                </div>
-            </div>
             <?php
             // User can send message to another user
             if ($visitorUserID !== $pageUserID) {
                 echo '<div class="row">';
                 echo '<h3>Send Message</h3>';
-                echo '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 message-send">';
+                echo '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 message-send">';
                 echo '<form action="" method="post" role="form">';
                 echo '<div class="form-group">';
                 echo '<p><textarea name="text" rows="4" class="form-control"></textarea></p>';

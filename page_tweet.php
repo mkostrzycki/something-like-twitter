@@ -12,9 +12,7 @@ require 'src/User.php';
 require 'src/Tweet.php';
 require 'src/Comment.php';
 
-// z geta mamy ID
 $tweetID = $_GET['id'];
-// walidacja
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -23,7 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $comment->setUserId($userID);
     $comment->setTweetId($tweetID);
-    $comment->setText($_POST['text']);
+    $commentText = htmlspecialchars($_POST['text'], ENT_QUOTES);
+    $comment->setText($commentText);
     $comment->setCreationDate(date('Y-m-d H:i:s'));
 
     $comment->saveToDB($conn);
@@ -57,16 +56,19 @@ $comments = Comment::loadAllCommentsByTweetId($conn, $tweetID);
                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
                     <?php
                     echo '<div class="tweet">';
+                    echo '<span class="tweet-username">' . '<a href="page_user.php?id='
+                        . $tweet->getUserId() . '"><span class="glyphicon glyphicon-user"></span> '
+                        . User::getUsernameById($conn, $tweet->getUserId()) . '</a></span>';
                     echo '<p>' . $tweet->getText() . '</p>';
-                    echo '<span class="tweet-date">' . $tweet->getCreationDate() . '</span>';
+                    echo '<span class="tweet-date"><span class="glyphicon glyphicon-calendar"></span> '
+                        . $tweet->getCreationDate() . '</span>';
                     echo '</div>';
                     ?>
                 </div>
             </div>
-            <!--formularz tworzenia nowego komentarza-->
             <div class="row comment-send">
                 <h3>Add Comment</h3>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 comment-send">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 comment-send">
                     <form action="" method="post" role="form">
                         <div class="form-group">
                             <p><textarea name="text" rows="4" class="form-control"<?php echo ($userID !== null) ? '' : 'disabled'; ?>></textarea></p>
@@ -75,7 +77,6 @@ $comments = Comment::loadAllCommentsByTweetId($conn, $tweetID);
                     </form>
                 </div>
             </div>
-            <!--wyświetl wszystkie komentarze-->
             <div class="row">
                 <h3>Comments</h3>
                 <div class="comments">
@@ -83,10 +84,12 @@ $comments = Comment::loadAllCommentsByTweetId($conn, $tweetID);
                     foreach ($comments as $comment) {
                         echo '<div class="row">';
                         echo '<div class="comment col-xs-12 col-sm-8 col-md-8 col-lg-6">';
+                        echo '<span class="tweet-username">' . '<a href="page_user?id=' . $comment->getUserId()
+                            . '"><span class="glyphicon glyphicon-user"></span> '
+                            . User::getUsernameById($conn, $comment->getUserId()) . '</a></span>';
                         echo '<p>' . $comment->getText() . '</p>';
-                        echo '<span class="tweet-date">' . $comment->getCreationDate() . '</span>';
-                        echo '<span class="tweet-username">' . '<a href="page_user?id=' . $comment->getUserId() . '">' 
-                                . User::getUsernameById($conn, $comment->getUserId()) . '</a></span>';
+                        echo '<span class="tweet-date"><span class="glyphicon glyphicon-calendar"></span> '
+                            . $comment->getCreationDate() . '</span>';
                         echo '</div>';
                         echo '</div>';
                     }

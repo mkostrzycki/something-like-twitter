@@ -41,6 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (strlen($newPass) > 0 && $newPass == $retypedNewPass) {
             $user->setPass($newPass);
             $somethingChange = true;
+        } elseif (strlen($newPass) > 0 && $newPass != $retypedNewPass) {
+            $errorMessage = 'New password and retyped new password doesn\'t match.';
         }
 
         if ($somethingChange) {
@@ -52,6 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $successMessage = 'New user data has been successfully saved.';
         }
+    } else {
+        $errorMessage = 'To change data You have to enter correct current password.';
     }
 }
 
@@ -71,19 +75,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
     <body>
+        <!--NAV START-->
+        <?php
+        include('includes/nav.php');
+        ?>
+        <!--NAV END-->
         <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="edit-user">
+                <div class="row">
                     <?php
                     if (isset($successMessage)) {
+                        echo '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 alert alert-success">';
                         echo $successMessage;
+                        echo '</div>';
                     }
                     ?>
                 </div>
-            </div>
-            <div class="edit-user">
                 <div class="row">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <?php
+                    if (isset($errorMessage)) {
+                        echo '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 alert alert-danger">';
+                        echo $errorMessage;
+                        echo '</div>';
+                    }
+                    ?>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             <form action="" method="post" role="form">
                                 <label for="username">Username</label>

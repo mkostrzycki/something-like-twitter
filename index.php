@@ -23,8 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     /** @ToDo: walidacja  */
     $tweet = new Tweet;
 
-    $tweet->setUserId($userID); //
-    $tweet->setText($_POST['text']);
+    $tweet->setUserId($userID);
+    $tweetText = htmlspecialchars($_POST['text'], ENT_QUOTES);
+    $tweet->setText($tweetText);
     $tweet->setCreationDate(date('Y-m-d H:i:s'));
 
     $tweet->saveToDB($conn);
@@ -70,8 +71,13 @@ $tweets = Tweet::loadAllTweets($conn);
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                     <div class="tweet-instruction">
-                        <!--Inny komunikat zależnie od tego czy zalogowany-->
-                        Myśmy więc on jest ta: każda realność, która swoją kulturę, wyjść z części. Ale czyżby w rzeczy szczęśliwości doprowadzić. My możemy się niezgadza z niej płynącej szczęśliwości tej dostąpić miało; gdyby więc też to tedy?
+                        <?php
+                        if ($userID !== null) {
+                            echo 'Write a tweet and then click on the <b>Add</b> button. Your tweet will appear in the All Tweets section.';
+                        } else {
+                            echo 'If You want to add a tweet You must first login or create an account. Click <b>Login</b> or <b>Sign Up</b> button in main menu.';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
