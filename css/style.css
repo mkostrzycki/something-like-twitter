@@ -13,7 +13,8 @@ h3 {
 }
 
 .login,
-.register
+.register,
+.edit-user
 {
     margin-left: 20%;
     margin-top: 10%;
@@ -21,8 +22,10 @@ h3 {
 
 .login label,
 .register label,
+.edit-user label,
 .login p,
-.register p
+.register p,
+.edit-user p
 {
     color: #B5A8C4;
 }
@@ -127,4 +130,13 @@ h3 {
   /* wyrównanie */
   justify-content: left;
   margin-top: 20px;
+}
+
+.user-info {
+    font-size: 150%;
+    color: #B5A8C4;
+}
+
+.text-label {
+    color: #635771;
 }

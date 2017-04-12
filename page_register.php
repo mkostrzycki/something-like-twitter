@@ -62,15 +62,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-group">
                             <form action="" method="post" role="form">
                                 <label for="username">Username</label>
-                                <input type="text" name="username" id="username">
+                                <input type="text" name="username" id="username" class="form-control">
                                 <br>
                                 <label for="email">Email</label>
-                                <input type="text" name="email" id="email">
+                                <input type="text" name="email" id="email" class="form-control">
                                 <br>
                                 <label for="password">Password</label>
-                                <input type="password" name="password" id="password">
+                                <input type="password" name="password" id="password" class="form-control">
                                 <br>
-                                <button>Register</button>
+                                <button type="submit" class="btn btn-default">Register</button>
                             </form>
                         </div>
                         <p>Already registered? <a href="page_login.php">Log in here</a></p>

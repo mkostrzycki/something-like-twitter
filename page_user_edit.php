@@ -14,11 +14,11 @@ $user = User::loadUserById($conn, $userID);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    /** 
-     * @ToDo: Filter received data 
-     * @ToDo: Add error messages 
+    /**
+     * @ToDo: Filter received data
+     * @ToDo: Add error messages
      */
-    
+
     $pass = $_POST['old-password'];
     if (password_verify($pass, $user->getHashPass())) {
 
@@ -81,28 +81,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ?>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <div class="form-group">
-                        <form action="" method="post" role="form">
-                            <label for="username">Username</label>
-                            <input type="text" name="username" id="username" value="<?php echo $user->getUsername(); ?>">
-                            <br>
-                            <label for="email">Email</label>
-                            <input type="text" name="email" id="email" value="<?php echo $user->getEmail(); ?>">
-                            <br>
-                            <label for="password">Old password</label>
-                            <input type="password" name="old-password" id="old-password">
-                            <br>
-                            <label for="password">New password</label>
-                            <input type="password" name="new-password" id="new-password">
-                            <br>
-                            <label for="password">Retype new password</label>
-                            <input type="password" name="retyped-new-password" id="retyped-new-password">
-                            <button>Save</button>
-                        </form>
+            <div class="edit-user">
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <form action="" method="post" role="form">
+                                <label for="username">Username</label>
+                                <input type="text" name="username" id="username" class="form-control" value="<?php echo $user->getUsername(); ?>">
+                                <br>
+                                <label for="email">Email</label>
+                                <input type="text" name="email" id="email" class="form-control" value="<?php echo $user->getEmail(); ?>">
+                                <br>
+                                <label for="password">Old password</label>
+                                <input type="password" name="old-password" id="old-password" class="form-control">
+                                <br>
+                                <label for="password">New password</label>
+                                <input type="password" name="new-password" id="new-password" class="form-control">
+                                <br>
+                                <label for="password">Retype new password</label>
+                                <input type="password" name="retyped-new-password" id="retyped-new-password" class="form-control">
+                                <br>
+                                <button type="submit" class="btn btn-default">Save</button>
+                            </form>
+                        </div>
+                        <p><a href="index.php">Return to main page</a></p>
                     </div>
-                    <p><a href="index.php">Return to main page</a></p>
                 </div>
             </div>
         </div>

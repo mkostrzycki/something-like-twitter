@@ -53,7 +53,7 @@ $tweets = Tweet::loadAllTweets($conn);
         ?>
         <!--NAV END-->
         <div class="jumbotron text-center">
-            <h1>Welcome, dear <?php echo ($username !== null) ? $username : 'Guest'; ?> <span class="glyphicon glyphicon-sunglasses"></span></h1>
+            <h1>Welcome <?php echo ($username !== null) ? $username : 'Guest'; ?> <span class="glyphicon glyphicon-sunglasses"></span></h1>
             <p>This page is a simple clone of twitter.
                 Feel free and tweet something&nbsp;:)</p>
         </div>

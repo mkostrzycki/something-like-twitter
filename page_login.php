@@ -66,12 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-group">
                             <form action="" method="post" role="form">
                                 <label for="email">Email</label>
-                                <input type="text" name="email" id="email">
+                                <input type="text" name="email" id="email" class="form-control">
                                 <br>
                                 <label for="password">Password</label>
-                                <input type="password" name="password" id="password">
+                                <input type="password" name="password" id="password" class="form-control">
                                 <br>
-                                <button>Log in</button>
+                                <button type="submit" class="btn btn-default">Log in</button>
                             </form>
                         </div>
                         <p>You are not registered? <a href="page_register.php">Create an account</a></p>

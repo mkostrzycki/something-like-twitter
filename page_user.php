@@ -59,10 +59,10 @@ $userTweets = Tweet::loadAllTweetsByUserId($conn, $pageUserID);
                 <h3>User Info</h3>
                 <div class="user-info">
                     <?php
-                    echo '<p>' . $user->getUsername() . '</p>';
-                    echo '<p>' . $user->getEmail() . '</p>';
+                    echo '<p><span class="text-label">Username: </span><b>' . $user->getUsername() . '</b></p>';
+                    echo '<p><span class="text-label">Email: </span><b>' . $user->getEmail() . '</b></p>';
                     if ($visitorUserID == $pageUserID) {
-                        echo '<p><a href="page_user_edit.php">Edit User</a></p>';
+                        echo '<p><a href="page_user_edit.php" class="btn btn-default" role="button">Edit User</a></p>';
                     }
                     ?>
                 </div>
